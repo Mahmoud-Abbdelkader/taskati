@@ -1,18 +1,176 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:gap/gap.dart';
+import 'package:intl/intl.dart';
+import 'package:taskati/Featuer/Home/home_screen.dart';
+import 'package:taskati/Models/all_tasks_model.dart';
 import 'package:taskati/core/constants/assets.dart';
+import 'package:taskati/core/constants/colors.dart';
+import 'package:taskati/core/helpers/hive_helper.dart';
+import 'package:taskati/core/helpers/navigation.dart';
 import 'package:taskati/core/styles/text_style.dart';
+import 'package:taskati/core/widgets/date__time_card.dart';
+import 'package:taskati/core/widgets/mainbottun.dart';
 
-class AddTaskScreen extends StatelessWidget {
+class AddTaskScreen extends StatefulWidget {
   const AddTaskScreen({super.key});
 
+  @override
+  State<AddTaskScreen> createState() => _AddTaskScreenState();
+}
+
+class _AddTaskScreenState extends State<AddTaskScreen> {
+  final titleController = TextEditingController();
+  final descriptionController = TextEditingController();
+  final dateController = TextEditingController();
+  final startTimeController = TextEditingController();
+  final endTimeController = TextEditingController();
+  String date = DateFormat('dd MMM, yyyy').format(DateTime.now());
+  String firstTime = DateFormat('hh:mm a').format(DateTime.now());
+  String endtTime = DateFormat(
+    'hh:mm a',
+  ).format(DateTime.now().add(Duration(hours: 1)));
+  String titlecontrol = '';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: SvgPicture.asset(AppAssets.arrrowLSvg),
-        title: Text('Add Task',style: AppText.titel,),
+        leading: IconButton(
+          onPressed: () {
+            setState(() {
+              pushReplacementPage(context: context, newScreen: HomeScreen());
+            });
+          },
+          icon: SvgPicture.asset(AppAssets.arrrowLSvg, height: 24, width: 24),
+        ),
+        title: Text('Add Task', style: AppText.titel),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(20),
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Gap(30),
+              Text('Title', style: AppText.discrebtion),
+              Gap(8),
+              TextFormField(
+                // cursorHeight: 48,
+                controller: titleController,
+                decoration: InputDecoration(
+                  // label: Text('Title',style: AppText.discrebtion,),
+                  fillColor: AppColors.whitecolor,
+                  hoverColor: Colors.transparent,
+                ),
+              ),
+              Gap(18),
+              Text('Description', style: AppText.discrebtion),
+              Gap(14),
+              TextFormField(
+                // cursorHeight: 100,
+                controller: descriptionController,
+                decoration: InputDecoration(
+                  fillColor: AppColors.primarycolor,
+                  hoverColor: Colors.transparent,
+                ),
+              ),
+              Gap(41),
+              Date_Time_card(
+                titel: 'Date',
+                subtitel: date,
+                leading: SvgPicture.asset(AppAssets.calendarSvg),
+                ontap: () => _selectedDate(context),
+              ),
+              Gap(24),
+              Date_Time_card(
+                titel: 'Start Time',
+                subtitel: firstTime,
+                leading: SvgPicture.asset(
+                  AppAssets.timeSvg,
+                  height: 26,
+                  width: 26,
+                ),
+                ontap: () => _selectedTime(context),
+              ),
+              Gap(24),
+              Date_Time_card(
+                titel: 'End Time',
+                subtitel: endtTime,
+                leading: SvgPicture.asset(
+                  AppAssets.timeSvg,
+                  height: 26,
+                  width: 26,
+                ),
+                ontap: () async {
+                  var selecteTime = await showTimePicker(
+                    context: context,
+                    initialTime: TimeOfDay.now(),
+                  );
+                  if (selecteTime != null) {
+                    setState(() {
+                      endtTime = selecteTime.format(context);
+                    });
+                  }
+                },
+              ),
+            ],
+          ),
+        ),
+      ),
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 32, horizontal: 22),
+        child: MainBottun(
+          titel: 'Add Task',
+          ontap: () {
+            String key = DateTime.now().microsecondsSinceEpoch.toString();
+            HiveHelper.cacheTask(
+              key,
+              AllTasksModel(
+                id: key,
+                title: titleController.text,
+                description: descriptionController.text,
+                date: date,
+                startTime: firstTime,
+                endTime: endtTime,
+              ),
+            );
+            pushReplacementPage(context: context, newScreen: HomeScreen());
+          },
+        ),
       ),
     );
+  }
+
+  Future<void> _selectedDate(BuildContext context) async {
+    {
+      var selecteDate = await showDatePicker(
+        context: context,
+
+        initialDate: DateTime.now(),
+        firstDate: DateTime.now(),
+        lastDate: DateTime(2030),
+      );
+      if (selecteDate != null) {
+        setState(() {
+          date = DateFormat('dd MMM, yyyy').format(selecteDate);
+        });
+      }
+    }
+  }
+
+  Future<void> _selectedTime(BuildContext context) async {
+    {
+      var selecteTime = await showTimePicker(
+        context: context,
+        initialTime: TimeOfDay.now(),
+      );
+      if (selecteTime != null) {
+        setState(() {
+          firstTime = selecteTime.format(context);
+        });
+      }
+    }
   }
 }

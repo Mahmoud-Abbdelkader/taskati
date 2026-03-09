@@ -1,10 +1,17 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:hive_ce/hive.dart';
+import 'package:hive_ce_flutter/adapters.dart';
 import 'package:taskati/Featuer/Start/Screens/splash_screen.dart';
+import 'package:taskati/core/helpers/hive_helper.dart';
 import 'package:taskati/core/styles/themes.dart';
+import 'package:taskati/hive/hive_registrar.g.dart';
 
-void main() {
+Future<void> main() async {
+  await Hive.initFlutter();
+  Hive.registerAdapters();
+  await HiveHelper.init();
   runApp(const MainApp());
 }
 
