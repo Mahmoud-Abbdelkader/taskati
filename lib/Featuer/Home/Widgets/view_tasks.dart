@@ -16,6 +16,8 @@ class ViewTasks extends StatelessWidget {
           description: task.description ?? '',
           startTime: task.startTime ?? '',
           endTime: task.endTime ?? '',
+          isCompleted: task.isCompleted?? false, 
+          task: task,
         );
       },
       separatorBuilder: (BuildContext context, int index) {

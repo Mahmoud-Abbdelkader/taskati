@@ -8,6 +8,7 @@ class AppAssets {
   // image
 
   static String userImg = 'assets/image/user.png';
+  static String backLghit = 'assets/image/backLghit.png';
 
 
 

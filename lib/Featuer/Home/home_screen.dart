@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:intl/intl.dart';
 import 'package:taskati/Featuer/AddTasks/Screens/add_task_screen.dart';
 import 'package:taskati/Featuer/Home/Widgets/day_indecator.dart';
 import 'package:taskati/Featuer/Home/Widgets/heder_home_screen.dart';
@@ -8,10 +9,15 @@ import 'package:taskati/Featuer/Home/Widgets/tab_tasks.dart';
 import 'package:taskati/core/constants/colors.dart';
 import 'package:taskati/core/helpers/navigation.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
-  // DateTime selectedDate = DateTime.now();
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  String _selectedValue = DateFormat('dd MMM, yyyy').format(DateTime.now());
 
   @override
   Widget build(BuildContext context) {
@@ -26,16 +32,22 @@ class HomeScreen extends StatelessWidget {
               Gap(24),
               day_indecator(),
               Gap(29),
-              Homedatepicker(),
+              Homedatepicker(
+                onDateChange: (date) {
+                  setState(() {
+                    _selectedValue = DateFormat('dd MMM, yyyy').format(date);
+                  });
+                },
+              ),
               Gap(24),
-              TabTasks(),
+              TabTasks(isSelect: _selectedValue),
             ],
           ),
         ),
       ),
       floatingActionButton: InkWell(
         onTap: () {
-          pushPage(context: context, newScreen: AddTaskScreen());
+          pushPage(context: context, newScreen: AddEditTaskScreen());
         },
         child: Container(
           height: 44,

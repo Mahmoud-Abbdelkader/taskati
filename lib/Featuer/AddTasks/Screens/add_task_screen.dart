@@ -14,25 +14,34 @@ import 'package:taskati/core/styles/text_style.dart';
 import 'package:taskati/core/widgets/date__time_card.dart';
 import 'package:taskati/core/widgets/mainbottun.dart';
 
-class AddTaskScreen extends StatefulWidget {
-  const AddTaskScreen({super.key});
-
+class AddEditTaskScreen extends StatefulWidget {
+  const AddEditTaskScreen({super.key, this.task});
+  final AllTasksModel? task;
   @override
-  State<AddTaskScreen> createState() => _AddTaskScreenState();
+  State<AddEditTaskScreen> createState() => _AddEditTaskScreenState();
 }
 
-class _AddTaskScreenState extends State<AddTaskScreen> {
+class _AddEditTaskScreenState extends State<AddEditTaskScreen> {
   final titleController = TextEditingController();
   final descriptionController = TextEditingController();
-  final dateController = TextEditingController();
-  final startTimeController = TextEditingController();
-  final endTimeController = TextEditingController();
   String date = DateFormat('dd MMM, yyyy').format(DateTime.now());
   String firstTime = DateFormat('hh:mm a').format(DateTime.now());
   String endtTime = DateFormat(
     'hh:mm a',
   ).format(DateTime.now().add(Duration(hours: 1)));
   String titlecontrol = '';
+  @override
+  void initState() {
+    super.initState();
+    if (widget.task != null) {
+      titleController.text = widget.task?.title ?? '';
+      descriptionController.text = widget.task?.description ?? '';
+      date = widget.task?.date ?? '';
+      firstTime = widget.task?.startTime ?? '';
+      endtTime = widget.task?.endTime ?? '';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,7 +54,10 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
           },
           icon: SvgPicture.asset(AppAssets.arrrowLSvg, height: 24, width: 24),
         ),
-        title: Text('Add Task', style: AppText.titel),
+        title: Text(
+          widget.task != null ? 'Edit Task' : 'Add Task',
+          style: AppText.titel,
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(20),
@@ -68,12 +80,20 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
               Gap(18),
               Text('Description', style: AppText.discrebtion),
               Gap(14),
-              TextFormField(
-                // cursorHeight: 100,
-                controller: descriptionController,
-                decoration: InputDecoration(
-                  fillColor: AppColors.primarycolor,
-                  hoverColor: Colors.transparent,
+              Expanded(
+                child: Column(
+                  children: [
+                    Expanded(
+                      child: TextFormField(
+                        // cursorHeight: 100,
+                        controller: descriptionController,
+                        decoration: InputDecoration(
+                          fillColor: AppColors.whitecolor,
+                          hoverColor: Colors.transparent,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
               Gap(41),
@@ -122,7 +142,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.symmetric(vertical: 32, horizontal: 22),
         child: MainBottun(
-          titel: 'Add Task',
+          titel: widget.task != null ? 'Save' : 'Add Task',
           ontap: () {
             String key = DateTime.now().microsecondsSinceEpoch.toString();
             HiveHelper.cacheTask(

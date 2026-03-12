@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:hive_ce/hive.dart';
 import 'package:hive_ce_flutter/adapters.dart';
 import 'package:taskati/Featuer/Start/Screens/splash_screen.dart';
+import 'package:taskati/core/constants/assets.dart';
+import 'package:taskati/core/constants/colors.dart';
 import 'package:taskati/core/helpers/hive_helper.dart';
 import 'package:taskati/core/styles/themes.dart';
 import 'package:taskati/hive/hive_registrar.g.dart';
@@ -22,10 +24,30 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      builder: (context, child) {
-        return SafeArea(top: false, bottom: Platform.isAndroid, child: child!);
-      },
       theme: AppThemes.lightTheme,
+      builder: (context, child) {
+        return 
+        SafeArea(
+          top: false,
+          bottom: Platform.isAndroid,
+          child: Scaffold(
+            body: Stack(children: [
+              Container(
+                height: double.infinity,
+                width: double.infinity,
+                color: AppColors.whitecolor,
+              ),
+              Image.asset(AppAssets.backLghit,
+               height: double.infinity,
+               width: double.infinity,
+               fit: BoxFit.cover,
+              ),
+              child!,
+              ])
+              ),
+        );
+      },
+      
       home: SplashScreen(),
     );
   }

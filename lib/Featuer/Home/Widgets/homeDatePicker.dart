@@ -3,15 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:taskati/core/constants/colors.dart';
 
 class Homedatepicker extends StatefulWidget {
-  const Homedatepicker({super.key});
-
+  const Homedatepicker({super.key, this.onDateChange});
+  final Function(DateTime)? onDateChange;
   @override
-  
   State<Homedatepicker> createState() => _HomedatepickerState();
 }
 
 class _HomedatepickerState extends State<Homedatepicker> {
   final DatePickerController _controller = DatePickerController();
+  
   @override
   void initState() {
     Future.delayed(const Duration(seconds: 1), () {
@@ -19,7 +19,7 @@ class _HomedatepickerState extends State<Homedatepicker> {
     });
     super.initState();
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -33,12 +33,7 @@ class _HomedatepickerState extends State<Homedatepicker> {
           selectedTextColor: Colors.white,
           height: 90,
           width: 64,
-          onDateChange: (date) {
-            // New date selected
-            setState(() {
-              // _selectedValue = date;
-            });
-          },
+          onDateChange: widget.onDateChange,
         ),
       ],
     );

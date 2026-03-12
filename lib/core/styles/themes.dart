@@ -5,10 +5,10 @@ import 'package:taskati/core/styles/text_style.dart';
 abstract class AppThemes {
   static ThemeData get lightTheme => ThemeData(
     fontFamily: 'Lexend',
-    scaffoldBackgroundColor: AppColors.whitecolor,
+    scaffoldBackgroundColor: Colors.transparent,
     appBarTheme: AppBarTheme(
       centerTitle: true,
-      backgroundColor: AppColors.whitecolor,
+      backgroundColor: Colors.transparent,
       titleTextStyle: AppText.titel.copyWith(fontFamily:'Lexend' ),
     ),
     inputDecorationTheme: InputDecorationTheme(
