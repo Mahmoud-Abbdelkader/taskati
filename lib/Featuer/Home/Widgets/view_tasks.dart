@@ -8,7 +8,11 @@ class ViewTasks extends StatelessWidget {
   final List<AllTasksModel> tasks;
   @override
   Widget build(BuildContext context) {
-    return ListView.separated(
+    if (tasks.isEmpty) {
+      return Center(child: Container(child: Text('No found')));
+    }
+    else{
+      return ListView.separated(
       itemBuilder: (BuildContext context, int index) {
         AllTasksModel task = tasks[index];
         return TaskCard(
@@ -16,7 +20,7 @@ class ViewTasks extends StatelessWidget {
           description: task.description ?? '',
           startTime: task.startTime ?? '',
           endTime: task.endTime ?? '',
-          isCompleted: task.isCompleted?? false, 
+          isCompleted: task.isCompleted ?? false,
           task: task,
         );
       },
@@ -24,6 +28,6 @@ class ViewTasks extends StatelessWidget {
         return Gap(15);
       },
       itemCount: tasks.length,
-    );
+    );}
   }
 }

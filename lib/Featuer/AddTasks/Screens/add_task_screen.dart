@@ -48,9 +48,7 @@ class _AddEditTaskScreenState extends State<AddEditTaskScreen> {
       appBar: AppBar(
         leading: IconButton(
           onPressed: () {
-            setState(() {
-              pushReplacementPage(context: context, newScreen: HomeScreen());
-            });
+            pop(context: context);
           },
           icon: SvgPicture.asset(AppAssets.arrrowLSvg, height: 24, width: 24),
         ),
@@ -69,10 +67,8 @@ class _AddEditTaskScreenState extends State<AddEditTaskScreen> {
               Text('Title', style: AppText.discrebtion),
               Gap(8),
               TextFormField(
-                // cursorHeight: 48,
                 controller: titleController,
                 decoration: InputDecoration(
-                  // label: Text('Title',style: AppText.discrebtion,),
                   fillColor: AppColors.whitecolor,
                   hoverColor: Colors.transparent,
                 ),
@@ -80,20 +76,12 @@ class _AddEditTaskScreenState extends State<AddEditTaskScreen> {
               Gap(18),
               Text('Description', style: AppText.discrebtion),
               Gap(14),
-              Expanded(
-                child: Column(
-                  children: [
-                    Expanded(
-                      child: TextFormField(
-                        // cursorHeight: 100,
-                        controller: descriptionController,
-                        decoration: InputDecoration(
-                          fillColor: AppColors.whitecolor,
-                          hoverColor: Colors.transparent,
-                        ),
-                      ),
-                    ),
-                  ],
+              TextFormField(
+                controller: descriptionController,
+                maxLines: 5,
+                decoration: InputDecoration(
+                  fillColor: AppColors.whitecolor,
+                  hoverColor: Colors.transparent,
                 ),
               ),
               Gap(41),
@@ -144,7 +132,20 @@ class _AddEditTaskScreenState extends State<AddEditTaskScreen> {
         child: MainBottun(
           titel: widget.task != null ? 'Save' : 'Add Task',
           ontap: () {
-            String key = DateTime.now().microsecondsSinceEpoch.toString();
+            if (widget.task != null) {
+              HiveHelper.cacheTask(
+                widget.task!.id ?? '',
+                widget.task!.copyWith(
+                title: titleController.text,
+                description: descriptionController.text,
+                date: date,
+                startTime: firstTime,
+                endTime: endtTime,
+                isCompleted: false
+                ),
+              );
+            }
+            else{String key = DateTime.now().microsecondsSinceEpoch.toString();
             HiveHelper.cacheTask(
               key,
               AllTasksModel(
@@ -155,8 +156,8 @@ class _AddEditTaskScreenState extends State<AddEditTaskScreen> {
                 startTime: firstTime,
                 endTime: endtTime,
               ),
-            );
-            pushReplacementPage(context: context, newScreen: HomeScreen());
+            );}
+            pop(context: context);
           },
         ),
       ),

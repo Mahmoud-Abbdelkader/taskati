@@ -15,5 +15,9 @@ void pushAndRemoveUntil({required BuildContext context,required Widget newScreen
     context,
     MaterialPageRoute(builder: (context) => newScreen),
     (route) => false,
-  );
+  ); 
+}
+void pop({required BuildContext context}){
+Navigator.pop(context);
+
 }

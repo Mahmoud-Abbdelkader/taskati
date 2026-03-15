@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
+import 'package:taskati/Featuer/AddTasks/Screens/add_task_screen.dart';
 import 'package:taskati/Models/all_tasks_model.dart';
 import 'package:taskati/core/constants/assets.dart';
 import 'package:taskati/core/constants/colors.dart';
 import 'package:taskati/core/helpers/hive_helper.dart';
+import 'package:taskati/core/helpers/navigation.dart';
 import 'package:taskati/core/styles/text_style.dart';
 
 class TaskCard extends StatelessWidget {
@@ -69,7 +71,12 @@ class TaskCard extends StatelessWidget {
             label: 'Done',
           ),
           SlidableAction(
-            onPressed: (context) {},
+            onPressed: (context) {
+              pushPage(
+                context: context,
+                newScreen: AddEditTaskScreen(task: task),
+              );
+            },
             backgroundColor: Colors.amber,
             foregroundColor: Colors.white,
             icon: Icons.edit,
