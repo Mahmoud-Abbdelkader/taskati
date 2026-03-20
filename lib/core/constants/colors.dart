@@ -9,5 +9,6 @@ class AppColors {
   static Color fillecolor = Color(0xffEDE8FF);
   static Color orange = Color(0xffFF7D53);
   static Color lightorange = Color(0xffFFE9E1);
+  // ignore: deprecated_member_use
   static Color darck = Color(0xff000000).withOpacity(0.04);
 }

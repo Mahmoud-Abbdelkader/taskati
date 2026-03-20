@@ -11,6 +11,7 @@ abstract class AppThemes {
       backgroundColor: Colors.transparent,
       titleTextStyle: AppText.titel.copyWith(fontFamily:'Lexend' ),
     ),
+    
     inputDecorationTheme: InputDecorationTheme(
       fillColor: AppColors.whitecolor,
       filled: true,

@@ -8,8 +8,8 @@ import 'package:taskati/core/constants/colors.dart';
 import 'package:taskati/core/helpers/hive_helper.dart';
 import 'package:taskati/core/styles/text_style.dart';
 
-class day_indecator extends StatelessWidget {
-  const day_indecator({super.key});
+class dayIndecator extends StatelessWidget {
+  const dayIndecator({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +43,7 @@ class day_indecator extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        DateFormat('E, d MM').format(DateTime.now()),
+                        DateFormat('E, d MMM').format(DateTime.now()),
                         style: AppText.tapbottun.copyWith(
                           color: AppColors.whitecolor,
                         ),
@@ -60,17 +60,19 @@ class day_indecator extends StatelessWidget {
                 ),
                 Gap(25),
                 CircularPercentIndicator(
+                  animation: true,
                   radius: 38,
                   lineWidth: 10,
                   percent: indecator.toInt() / 100,
                   center: Text(
-                    '$indecator',
+                    '${indecator.toInt()}%',
                     style: AppText.subtitel.copyWith(
                       color: AppColors.whitecolor,
                     ),
                   ),
                   progressColor: AppColors.whitecolor,
                   backgroundColor: Color(0xff8764FF),
+                  circularStrokeCap: CircularStrokeCap.round,
                 ),
               ],
             ),

@@ -1,10 +1,7 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 import 'package:intl/intl.dart';
-import 'package:taskati/Featuer/Home/home_screen.dart';
 import 'package:taskati/Models/all_tasks_model.dart';
 import 'package:taskati/core/constants/assets.dart';
 import 'package:taskati/core/constants/colors.dart';
@@ -85,14 +82,14 @@ class _AddEditTaskScreenState extends State<AddEditTaskScreen> {
                 ),
               ),
               Gap(41),
-              Date_Time_card(
+              DateTimecard(
                 titel: 'Date',
                 subtitel: date,
                 leading: SvgPicture.asset(AppAssets.calendarSvg),
                 ontap: () => _selectedDate(context),
               ),
               Gap(24),
-              Date_Time_card(
+              DateTimecard(
                 titel: 'Start Time',
                 subtitel: firstTime,
                 leading: SvgPicture.asset(
@@ -103,7 +100,7 @@ class _AddEditTaskScreenState extends State<AddEditTaskScreen> {
                 ontap: () => _selectedTime(context),
               ),
               Gap(24),
-              Date_Time_card(
+              DateTimecard(
                 titel: 'End Time',
                 subtitel: endtTime,
                 leading: SvgPicture.asset(
@@ -136,27 +133,28 @@ class _AddEditTaskScreenState extends State<AddEditTaskScreen> {
               HiveHelper.cacheTask(
                 widget.task!.id ?? '',
                 widget.task!.copyWith(
-                title: titleController.text,
-                description: descriptionController.text,
-                date: date,
-                startTime: firstTime,
-                endTime: endtTime,
-                isCompleted: false
+                  title: titleController.text,
+                  description: descriptionController.text,
+                  date: date,
+                  startTime: firstTime,
+                  endTime: endtTime,
+                  isCompleted: false,
+                ),
+              );
+            } else {
+              String key = DateTime.now().microsecondsSinceEpoch.toString();
+              HiveHelper.cacheTask(
+                key,
+                AllTasksModel(
+                  id: key,
+                  title: titleController.text,
+                  description: descriptionController.text,
+                  date: date,
+                  startTime: firstTime,
+                  endTime: endtTime,
                 ),
               );
             }
-            else{String key = DateTime.now().microsecondsSinceEpoch.toString();
-            HiveHelper.cacheTask(
-              key,
-              AllTasksModel(
-                id: key,
-                title: titleController.text,
-                description: descriptionController.text,
-                date: date,
-                startTime: firstTime,
-                endTime: endtTime,
-              ),
-            );}
             pop(context: context);
           },
         ),

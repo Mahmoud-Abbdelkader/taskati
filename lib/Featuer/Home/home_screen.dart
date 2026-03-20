@@ -30,7 +30,7 @@ class _HomeScreenState extends State<HomeScreen> {
             children: [
               heder_home_screen(),
               Gap(24),
-              day_indecator(),
+              dayIndecator(),
               Gap(29),
               Homedatepicker(
                 onDateChange: (date) {
@@ -57,6 +57,7 @@ class _HomeScreenState extends State<HomeScreen> {
             borderRadius: BorderRadius.circular(22),
             boxShadow: [
               BoxShadow(
+                // ignore: deprecated_member_use
                 color: AppColors.primarycolor.withOpacity(0.5),
                 blurRadius: 18,
                 offset: Offset(2, 10),

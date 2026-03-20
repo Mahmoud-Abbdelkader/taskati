@@ -7,6 +7,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:taskati/Featuer/Home/home_screen.dart';
 import 'package:taskati/core/constants/assets.dart';
 import 'package:taskati/core/constants/colors.dart';
+import 'package:taskati/core/helpers/hive_helper.dart';
 import 'package:taskati/core/helpers/navigation.dart';
 import 'package:taskati/core/styles/text_style.dart';
 import 'package:taskati/core/widgets/input_box.dart';
@@ -21,6 +22,7 @@ class CompleteScreen extends StatefulWidget {
 }
 
 class _CompleteScreenState extends State<CompleteScreen> {
+  var titleController = TextEditingController();
   String? path;
   @override
   Widget build(BuildContext context) {
@@ -31,7 +33,9 @@ class _CompleteScreenState extends State<CompleteScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              Center(child: Text('Complete Your Profile', style: AppText.titel)),
+              Center(
+                child: Text('Complete Your Profile', style: AppText.titel),
+              ),
               Gap(85),
               Row(
                 children: [
@@ -51,14 +55,22 @@ class _CompleteScreenState extends State<CompleteScreen> {
                         ? FileImage(File(path!))
                         : AssetImage(AppAssets.userImg),
                   ),
-                  Positioned(
-                    bottom: 5,
-                    right: 5,
-                    child: CircleAvatar(
-                      backgroundColor: AppColors.whitecolor,
-                      child: SvgPicture.asset(AppAssets.deletSvg),
+                  if (path != null)
+                    Positioned(
+                      bottom: 5,
+                      right: 5,
+                      child: CircleAvatar(
+                        backgroundColor: AppColors.whitecolor,
+                        child: IconButton(
+                          onPressed: () {
+                            setState(() {
+                              path = null;
+                            });
+                          },
+                          icon: SvgPicture.asset(AppAssets.deletSvg),
+                        ),
+                      ),
                     ),
-                  ),
                 ],
               ),
               Gap(34),
@@ -75,6 +87,7 @@ class _CompleteScreenState extends State<CompleteScreen> {
                         if (image != null) {
                           path = image.path;
                         }
+                        HiveHelper.userBox.put(HiveHelper.imageKay, path);
                       });
                     },
                   ),
@@ -106,7 +119,15 @@ class _CompleteScreenState extends State<CompleteScreen> {
                 ],
               ),
               Gap(8),
-              InputBox(hint: 'Enter your name'),
+              TextFormField(
+                controller: titleController,
+                decoration: InputDecoration(
+                  hintText: 'Enter your name',
+                  hintStyle: AppText.subtitel,
+                  fillColor: AppColors.whitecolor,
+                  hoverColor: Colors.transparent,
+                ),
+              ),
             ],
           ),
         ),
@@ -116,7 +137,12 @@ class _CompleteScreenState extends State<CompleteScreen> {
         child: MainBottun(
           titel: 'Let\'s Start !',
           ontap: () {
-              pushReplacementPage(context: context, newScreen: HomeScreen());
+            pushReplacementPage(context: context, newScreen: HomeScreen());
+            if (titleController.text.isNotEmpty || path != null) {
+              HiveHelper.setUserInfo(titleController.text, path ?? '');
+              
+            }
+            HiveHelper.cacheData('isUploaded', true);
           },
         ),
       ),

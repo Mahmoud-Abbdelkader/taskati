@@ -20,7 +20,8 @@ class TapBottun extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {},
+      onTap: ontap,
+      hoverColor: Colors.transparent,
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 20),
         height: 35,

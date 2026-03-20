@@ -4,8 +4,8 @@ import 'package:taskati/core/constants/assets.dart';
 import 'package:taskati/core/constants/colors.dart';
 import 'package:taskati/core/styles/text_style.dart';
 
-class Date_Time_card extends StatelessWidget {
-  const Date_Time_card({
+class DateTimecard extends StatelessWidget {
+  const DateTimecard({
     super.key,
     required this.titel,
     required this.subtitel,

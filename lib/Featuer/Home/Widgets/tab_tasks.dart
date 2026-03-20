@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:hive_ce_flutter/adapters.dart';
@@ -6,7 +5,6 @@ import 'package:taskati/Featuer/Home/Widgets/tabs.dart';
 import 'package:taskati/Featuer/Home/Widgets/view_tasks.dart';
 import 'package:taskati/Models/all_tasks_model.dart';
 import 'package:taskati/core/helpers/hive_helper.dart';
-import 'package:taskati/core/widgets/task_card.dart';
 
 class TabTasks extends StatefulWidget {
   const TabTasks({super.key, required this.isSelect});
